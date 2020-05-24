@@ -43,54 +43,60 @@ public class Gamble extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (command.getName().equalsIgnoreCase("gamble") && args.length == 0) {
+        if (command.getName().equalsIgnoreCase("gamble") && (args.length <= 1)) {
             sender.sendMessage("Proper usage is /gamble [amount] [heads or tails]");
+            return true;
         }
         if (command.getName().equalsIgnoreCase("gamble") && args.length == 2) ;
         {
-            Player player = (Player) sender;
-            amount = Integer.parseInt(args[0]);
-            if (amount>99 && amount<=econ.getBalance(player)) {
-                displaychoice = args[1];
+            try {
+                amount = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage("Please type a valid number");
+                return true;
+            }
+        }
+        Player player = (Player) sender;
+        if (amount > 99 && amount <= econ.getBalance(player)) {
+            displaychoice = args[1];
+
+
+            if (args[1].equalsIgnoreCase("heads")) {
                 EconomyResponse s = econ.withdrawPlayer(player, amount);
                 if (s.transactionSuccess()) {
-                    sender.sendMessage(String.format(ChatColor.RED+"%s was taken", econ.format(s.amount)));
-                }
-
-                if (args[1].equalsIgnoreCase("heads")) {
+                    sender.sendMessage(String.format(ChatColor.RED + "%s was taken", econ.format(s.amount)));
                     choice = 0;
-                    sender.sendMessage(ChatColor.BLUE+"You have wagered $" + amount + " and chose " + displaychoice);
-                } else if (args[1].equalsIgnoreCase("tails")) {
+                    sender.sendMessage(ChatColor.BLUE + "You have wagered $" + amount + " and chose " + displaychoice);
+                }
+            } else if (args[1].equalsIgnoreCase("tails")) {
+                EconomyResponse s = econ.withdrawPlayer(player, amount);
+                if (s.transactionSuccess()) {
+                    sender.sendMessage(String.format(ChatColor.RED + "%s was taken", econ.format(s.amount)));
                     choice = 1;
-                    sender.sendMessage(ChatColor.BLUE+"You have wagered $" + amount + " and chose " + displaychoice);
-                } else {
-                    sender.sendMessage("Please pick heads or tails");
-                    return true;
+                    sender.sendMessage(ChatColor.BLUE + "You have wagered $" + amount + " and chose " + displaychoice);
                 }
-
-                Random random = new Random();
-                int result = random.nextInt(2);
-                if (result == choice) {
-                    sender.sendMessage(ChatColor.DARK_PURPLE+"The coin landed on " + displaychoice + "! \nYou win $" + amount + "!");
-                    EconomyResponse r = econ.depositPlayer(player, amount * 2);
-                    if (r.transactionSuccess()) {
-                        sender.sendMessage(String.format("You now have %s", econ.format(r.balance)));
-                    }
-
-                }
-                if (result != choice) {
-                    sender.sendMessage(ChatColor.RED+"The coin did not land on " + displaychoice + "! \nYou lose $" + amount + "!");
-                    sender.sendMessage(String.format("You now have %s", econ.format(s.balance)));
-
-                }
+            } else {
+                sender.sendMessage("Please pick heads or tails");
+                return true;
             }
-                else
-            {
+
+            Random random = new Random();
+            int result = random.nextInt(2);
+            if (result == choice) {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "The coin landed on " + displaychoice + "! \nYou win $" + amount + "!");
+                EconomyResponse r = econ.depositPlayer(player, amount * 2);
+                if (r.transactionSuccess()) {
+                    sender.sendMessage(String.format("You now have %s", econ.format(r.balance)));
+                }
+
+            }
+            if (result != choice) {
+                double r = econ.getBalance(player);
+                sender.sendMessage(ChatColor.RED + "The coin did not land on " + displaychoice + "! \nYou lose $" + amount + "!");
+                sender.sendMessage(String.format("You now have %s", econ.format(r)));
+            }
+            } else {
                 sender.sendMessage("Invalid amount! Make sure the amount is $100+ and less than your balance!");
-            }
-
-
-
             }
             return true;
         }
