@@ -1,0 +1,11 @@
+main: me.mmm10.gamble.Gamble
+name: Gamble
+description: This plugin allows you to gamble!!!
+version: 1.0
+api-version: 1.15
+author: MMM10
+commands:
+  gamble:
+    description: allows you to gamble!!!
+    usage: /gamble amount
+depend: [Vault]
