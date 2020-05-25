@@ -7,5 +7,8 @@ author: MMM10
 commands:
   gamble:
     description: allows you to gamble!!!
-    usage: /gamble amount
+    usage: /gamble [amount] [heads or tails]
+  cards:
+    description: pick a card to win $$$
+    usage: /cards [wager] [amount of cards] [card pick]
 depend: [Vault]

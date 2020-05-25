@@ -22,6 +22,7 @@ public class Gamble extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        getCommand("cards").setExecutor(new Cards(econ));
     }
 
     private boolean setupEconomy() {
@@ -44,10 +45,17 @@ public class Gamble extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("gamble") && (args.length <= 1)) {
-            sender.sendMessage("Proper usage is /gamble [amount] [heads or tails]");
-            return true;
+            if (command.getName().equalsIgnoreCase("gamble")&&(args.length == 1)&&(args[0].equalsIgnoreCase("help"))){
+                sender.sendMessage(ChatColor.BLUE+"/gamble help: brings up this message \n/gamble [amount] [heads or tails]: allows you to play a 50/50 heads or tails game \n/rps [player] [rock or paper or scissors] [wager]: allows you to challenge someone to a game of rock, paper, scissors");
+                return true;
+            }
+            else {
+                sender.sendMessage("Proper usage is /gamble [amount] [heads or tails]");
+                return true;
+            }
         }
-        if (command.getName().equalsIgnoreCase("gamble") && args.length == 2) ;
+
+        if (command.getName().equalsIgnoreCase("gamble") && args.length == 2)
         {
             try {
                 amount = Integer.parseInt(args[0]);
@@ -98,6 +106,7 @@ public class Gamble extends JavaPlugin {
             } else {
                 sender.sendMessage("Invalid amount! Make sure the amount is $100+ and less than your balance!");
             }
+
             return true;
         }
 
