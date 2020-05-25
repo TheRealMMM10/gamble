@@ -23,6 +23,7 @@ public class Gamble extends JavaPlugin {
             return;
         }
         getCommand("cards").setExecutor(new Cards(econ));
+        getCommand("slots").setExecutor(new SlotMachine(econ));
     }
 
     private boolean setupEconomy() {
@@ -46,11 +47,11 @@ public class Gamble extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("gamble") && (args.length <= 1)) {
             if (command.getName().equalsIgnoreCase("gamble")&&(args.length == 1)&&(args[0].equalsIgnoreCase("help"))){
-                sender.sendMessage(ChatColor.BLUE+"/gamble help: brings up this message \n/gamble [amount] [heads or tails]: allows you to play a 50/50 heads or tails game \n/rps [player] [rock or paper or scissors] [wager]: allows you to challenge someone to a game of rock, paper, scissors");
+                sender.sendMessage(ChatColor.BLUE+"/gamble help: brings up this message \n/gamble [amount] [heads or tails]: allows you to play a 50/50 heads or tails game \n/rps [player] [rock or paper or scissors] [wager]: allows you to challenge someone to a game of rock, paper, scissors \n/cards [wager] [amount of cards being chosen from] [your card pick]: Pick the right card and win serious cash! (The more cards that can be chosen, the more you win) \n/slots spin: get 3 of the same to win!");
                 return true;
             }
             else {
-                sender.sendMessage("Proper usage is /gamble [amount] [heads or tails]");
+                sender.sendMessage(ChatColor.GRAY+"Proper usage is /gamble [amount] [heads or tails]");
                 return true;
             }
         }
@@ -60,7 +61,7 @@ public class Gamble extends JavaPlugin {
             try {
                 amount = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage("Please type a valid number");
+                sender.sendMessage(ChatColor.GRAY+"Please type a valid number");
                 return true;
             }
         }
@@ -84,7 +85,7 @@ public class Gamble extends JavaPlugin {
                     sender.sendMessage(ChatColor.BLUE + "You have wagered $" + amount + " and chose " + displaychoice);
                 }
             } else {
-                sender.sendMessage("Please pick heads or tails");
+                sender.sendMessage(ChatColor.GRAY+"Please pick heads or tails");
                 return true;
             }
 
@@ -104,7 +105,7 @@ public class Gamble extends JavaPlugin {
                 sender.sendMessage(String.format("You now have %s", econ.format(r)));
             }
             } else {
-                sender.sendMessage("Invalid amount! Make sure the amount is $100+ and less than your balance!");
+                sender.sendMessage(ChatColor.GRAY+"Invalid amount! Make sure the amount is $100+ and less than your balance!");
             }
 
             return true;
