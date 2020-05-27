@@ -17,10 +17,10 @@ public class SlotMachine implements CommandExecutor {
         econ = economy;
     }
     int cost = 1000;
-    int coal = 3000;
-    int iron = 8000;
-    int gold = 15000;
-    int diamond = 30000;
+    int coal = 5000;
+    int iron = 12000;
+    int gold = 20000;
+    int diamond = 45000;
     int emerald = 100000;
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {

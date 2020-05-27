@@ -14,4 +14,8 @@ commands:
   slots:
     description: get 3 of the same blocks to win
     usage: /slots spin
+  tyl:
+    description: Try your luck by pumping a balloon
+    usage: /tyl [wager], pump, or stop
+
 depend: [Vault]
